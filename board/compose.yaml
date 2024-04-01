@@ -3,7 +3,7 @@ services:
     image: mysql:8.0
     container_name: mysql
     ports:
-      - 3307:3306 # HOST:CONTAINER
+      - 3306:3306 # HOST:CONTAINER
     environment:
       MYSQL_ROOT_PASSWORD: jungi1234	# 구성활 MySQL의 root 비밀번호
       MYSQL_ROOT_HOST: '%'
