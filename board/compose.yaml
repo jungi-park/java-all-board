@@ -1,0 +1,15 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - 3307:3306 # HOST:CONTAINER
+    environment:
+      MYSQL_ROOT_PASSWORD: jungi1234	# 구성활 MySQL의 root 비밀번호
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: board				# 기본으로 생성할 database명
+    volumes:
+      - ./db/mysql/data:/var/lib/mysql
+    command:
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
