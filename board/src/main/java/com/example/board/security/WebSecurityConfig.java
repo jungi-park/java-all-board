@@ -33,7 +33,6 @@ public class WebSecurityConfig {
 
 	    @Bean
 	    public CorsConfigurationSource getCorsConfiguration() {
-
 	        CorsConfiguration config = new CorsConfiguration();
 	        config.setAllowedOriginPatterns(Collections.singletonList("*"));
 	        config.setAllowedMethods(Collections.singletonList("*"));
