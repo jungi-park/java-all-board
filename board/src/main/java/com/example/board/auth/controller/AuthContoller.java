@@ -37,5 +37,13 @@ public class AuthContoller {
     	response.setMessage("회원가입 성공");
     	return response;
     }
+    
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public AuthResponseDto signUp() throws Exception {
+    	AuthResponseDto response = new AuthResponseDto();
+    	response.setHttpStatus(HttpStatus.OK);
+    	response.setMessage("필터테스트 성공");
+    	return response;
+    }
 
 }

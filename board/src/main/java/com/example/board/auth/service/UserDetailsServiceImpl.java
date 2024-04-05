@@ -26,8 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
 		try {
-			log.info("id = {}",userId);
-			log.info("user = {}",userService.findByUserId(userId));
 			return userService.findByUserId(userId).map(this::setAuthorities)
 					.orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 		} catch (Exception e) {

@@ -13,13 +13,23 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.example.board.auth.service.UserDetailsServiceImpl;
+import com.example.board.security.filter.JwtAuthorizationFilter;
+
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
+	
+	private final UserDetailsServiceImpl userDetailsServiceImpl;
+	private final JwtAuthorizationFilter jwtAuthorizationFilter;
 	
 	 @Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,7 +37,7 @@ public class WebSecurityConfig {
 	                .csrf(AbstractHttpConfigurer::disable)
 	                .cors(cors -> cors.configurationSource(getCorsConfiguration()))
 	                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	                .authorizeHttpRequests((requests) -> requests.anyRequest().permitAll());
+	                .authorizeHttpRequests((requests) -> requests.requestMatchers("/api/auth/test").hasAnyAuthority("USER").anyRequest().permitAll()).addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 	        return http.build();
 	    }
 
@@ -47,6 +57,7 @@ public class WebSecurityConfig {
 	    @Bean
 	    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity, PasswordEncoder passwordEncoder) throws Exception {
 	        AuthenticationManagerBuilder authenticationManagerBuilder = httpSecurity.getSharedObject(AuthenticationManagerBuilder.class);
+	        authenticationManagerBuilder.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder);
 	        return authenticationManagerBuilder.build();
 	    }
 
