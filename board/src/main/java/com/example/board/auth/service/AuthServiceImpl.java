@@ -1,8 +1,12 @@
 package com.example.board.auth.service;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.board.auth.dto.AuthRequestDto;
@@ -19,9 +23,13 @@ public class AuthServiceImpl implements AuthService {
 	private final UserService userService;
 	private final JwtTokenProvider JwtTokenProvider;
 	private final AuthenticationManager authenticationManager;
+	private final BCryptPasswordEncoder encoder;
 
 	@Override
 	public void createUser(User user) throws Exception {
+		user.setPassword(encoder.encode(user.getPassword()));
+		Collection<String> userRole = Collections.singleton("USER");
+		user.setRoles(userRole);
 		userService.saveUser(user);
 	}
 
@@ -29,7 +37,6 @@ public class AuthServiceImpl implements AuthService {
 	public AuthResponseDto login(AuthRequestDto authRequestDto) throws Exception {
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getUserId(), authRequestDto.getPassword()));
 		return JwtTokenProvider.createToken(authentication);
-		
 	}
 
 

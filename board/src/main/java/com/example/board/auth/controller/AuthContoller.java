@@ -1,7 +1,6 @@
 package com.example.board.auth.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,9 +12,7 @@ import com.example.board.auth.entity.User;
 import com.example.board.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -27,14 +24,18 @@ public class AuthContoller {
     public AuthResponseDto login(@RequestBody AuthRequestDto authRequestDto) throws Exception {
     	AuthResponseDto response = authService.login(authRequestDto);
     	response.setHttpStatus(HttpStatus.OK);
+    	response.setMessage("로그인 성공");
     	return response;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<User> signUp(@RequestBody User user) throws Exception {
-    	log.info("{} user", user);
+    public AuthResponseDto signUp(@RequestBody User user) throws Exception {
     	authService.createUser(user);
-    	return null;
+    	AuthResponseDto response = new AuthResponseDto();
+    	response.setMemberId(user.getUserId());
+    	response.setHttpStatus(HttpStatus.OK);
+    	response.setMessage("회원가입 성공");
+    	return response;
     }
 
 }
