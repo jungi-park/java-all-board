@@ -1,4 +1,4 @@
-package com.example.board.security;
+package com.example.board.security.config;
 
 import java.util.Collections;
 

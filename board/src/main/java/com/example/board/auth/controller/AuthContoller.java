@@ -1,11 +1,14 @@
 package com.example.board.auth.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.board.auth.dto.AuthRequestDto;
+import com.example.board.auth.dto.AuthResponseDto;
 import com.example.board.auth.entity.User;
 import com.example.board.auth.service.AuthService;
 
@@ -21,7 +24,10 @@ public class AuthContoller {
     private final AuthService authService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public void login() throws Exception {
+    public AuthResponseDto login(@RequestBody AuthRequestDto authRequestDto) throws Exception {
+    	AuthResponseDto response = authService.login(authRequestDto);
+    	response.setHttpStatus(HttpStatus.OK);
+    	return response;
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
