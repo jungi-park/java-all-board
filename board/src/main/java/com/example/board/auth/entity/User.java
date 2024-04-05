@@ -22,7 +22,7 @@ public class User implements UserDetails {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "userId",unique = true)
+	@Column(name = "userId", unique = true)
 	private String userId;
 
 	@Column(name = "name")
@@ -34,41 +34,41 @@ public class User implements UserDetails {
 	@Column(name = "roles")
 	private Collection<String> roles;
 
-    @Transient
-    private Collection<SimpleGrantedAuthority> authorities;
+	@Transient
+	private Collection<SimpleGrantedAuthority> authorities;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return this.authorities;
+	}
 
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
 
-    @Override
-    public String getUsername() {
-        return this.userId;
-    }
+	@Override
+	public String getUsername() {
+		return this.userId;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }
