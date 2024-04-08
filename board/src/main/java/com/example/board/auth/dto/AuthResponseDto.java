@@ -16,6 +16,6 @@ public class AuthResponseDto {
 	private String message;
 	private String accessToken;
     private String refreshToken;
-    private String memberId;
+    private String userId;
     private HttpStatus httpStatus;
 }

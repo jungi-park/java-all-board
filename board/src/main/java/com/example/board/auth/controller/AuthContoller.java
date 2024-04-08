@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.board.auth.dto.AuthRequestDto;
 import com.example.board.auth.dto.AuthResponseDto;
-import com.example.board.auth.dto.SignUpDto;
+import com.example.board.auth.dto.SignUpRequestDto;
+import com.example.board.auth.dto.SignUpResponseDto;
 import com.example.board.auth.service.AuthService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,10 +38,10 @@ public class AuthContoller {
 	
 	@Operation(summary = "회원가입 API", description = "회원가입 API입니다.")
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-	public AuthResponseDto signUp(@RequestBody SignUpDto signUpDto) throws Exception {
+	public SignUpResponseDto signUp(@RequestBody SignUpRequestDto signUpDto) throws Exception {
 		authService.createUser(signUpDto);
-		AuthResponseDto response = new AuthResponseDto();
-		response.setMemberId(signUpDto.getUserId());
+		SignUpResponseDto response = new SignUpResponseDto();
+		response.setUserId(signUpDto.getUserId());
 		response.setHttpStatus(HttpStatus.OK);
 		response.setMessage("회원가입 성공");
 		return response;

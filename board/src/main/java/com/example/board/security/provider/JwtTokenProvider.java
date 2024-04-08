@@ -52,7 +52,7 @@ public class JwtTokenProvider {
                 .compact();
 
         return AuthResponseDto.builder()
-                .memberId(authentication.getName())
+                .userId(authentication.getName())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

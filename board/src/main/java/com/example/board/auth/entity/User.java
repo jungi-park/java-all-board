@@ -88,6 +88,6 @@ public class User implements UserDetails {
 	}
 
 	public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
-	this.authorities = authorities;
+		this.authorities = authorities;
 	}
 }
