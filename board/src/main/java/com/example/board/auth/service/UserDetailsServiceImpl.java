@@ -12,13 +12,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.board.auth.entity.User;
+import com.example.board.auth.model.AuthRole;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	private final UserService userService;
@@ -38,8 +38,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return user;
 	}
 
-	public List<SimpleGrantedAuthority> getRoles(List<String> list) {
-		return list.stream().map(String::new).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+	public List<SimpleGrantedAuthority> getRoles(List<AuthRole> list) {
+	    return list.stream()
+	               .map(authRole -> authRole.name()) // AuthRole을 String으로 변환
+	               .map(SimpleGrantedAuthority::new) // String을 SimpleGrantedAuthority로 변환
+	               .collect(Collectors.toList());
 	}
 
 }

@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.example.board.auth.model.AuthRole;
 import com.example.board.auth.service.UserDetailsServiceImpl;
 import com.example.board.security.filter.JwtAuthorizationFilter;
 
@@ -37,7 +38,7 @@ public class WebSecurityConfig {
 	                .csrf(AbstractHttpConfigurer::disable)
 	                .cors(cors -> cors.configurationSource(getCorsConfiguration()))
 	                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	                .authorizeHttpRequests((requests) -> requests.requestMatchers("/api/auth/test").hasAnyAuthority("USER").anyRequest().permitAll()).addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+	                .authorizeHttpRequests((requests) -> requests.requestMatchers("/api/auth/test").hasAnyAuthority(AuthRole.USER.name()).anyRequest().permitAll()).addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 	        return http.build();
 	    }
 

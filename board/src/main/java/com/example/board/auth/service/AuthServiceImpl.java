@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.board.auth.dto.AuthRequestDto;
 import com.example.board.auth.dto.AuthResponseDto;
 import com.example.board.auth.entity.User;
+import com.example.board.auth.model.AuthRole;
 import com.example.board.security.provider.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public void createUser(User user) throws Exception {
 		user.setPassword(encoder.encode(user.getPassword()));
-		Collection<String> userRole = Collections.singleton("USER");
+		Collection<AuthRole> userRole = Collections.singleton(AuthRole.USER);
 		user.setRoles(userRole);
 		userService.saveUser(user);
 	}
