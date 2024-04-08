@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.board.auth.dto.AuthRequestDto;
 import com.example.board.auth.dto.AuthResponseDto;
@@ -28,6 +29,7 @@ public class AuthServiceImpl implements AuthService {
 	private final BCryptPasswordEncoder encoder;
 
 	@Override
+	@Transactional
 	public void createUser(SignUpRequestDto signUpDto) throws Exception {
 		Collection<AuthRole> userRole = Collections.singleton(AuthRole.USER);
 		User user = User.builder().name(signUpDto.getName()).userId(signUpDto.getUserId())
@@ -36,6 +38,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
+	@Transactional
 	public AuthResponseDto login(AuthRequestDto authRequestDto) throws Exception {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authRequestDto.getUserId(), authRequestDto.getPassword()));
