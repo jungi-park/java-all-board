@@ -1,6 +1,7 @@
 package com.example.board.auth.entity;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,10 +15,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +43,14 @@ public class User implements UserDetails {
 
 	@Transient
 	private Collection<SimpleGrantedAuthority> authorities;
+
+	@Builder
+	public User(String name, String userId, String password, Collection<AuthRole> roles) {
+		this.userId = userId;
+		this.name = name;
+		this.password = password;
+		this.roles = roles;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,5 +85,9 @@ public class User implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
+	this.authorities = authorities;
 	}
 }
