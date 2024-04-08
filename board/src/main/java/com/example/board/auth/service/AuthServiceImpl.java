@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.board.auth.dto.AuthRequestDto;
 import com.example.board.auth.dto.AuthResponseDto;
+import com.example.board.auth.dto.SignUpDto;
 import com.example.board.auth.entity.User;
 import com.example.board.auth.model.AuthRole;
 import com.example.board.security.provider.JwtTokenProvider;
@@ -27,18 +28,18 @@ public class AuthServiceImpl implements AuthService {
 	private final BCryptPasswordEncoder encoder;
 
 	@Override
-	public void createUser(User user) throws Exception {
-		user.setPassword(encoder.encode(user.getPassword()));
+	public void createUser(SignUpDto signUpDto) throws Exception {
 		Collection<AuthRole> userRole = Collections.singleton(AuthRole.USER);
-		user.setRoles(userRole);
+		User user = User.builder().name(signUpDto.getName()).userId(signUpDto.getUserId())
+				.password(encoder.encode(signUpDto.getPassword())).roles(userRole).build();
 		userService.saveUser(user);
 	}
 
 	@Override
 	public AuthResponseDto login(AuthRequestDto authRequestDto) throws Exception {
-		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDto.getUserId(), authRequestDto.getPassword()));
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(authRequestDto.getUserId(), authRequestDto.getPassword()));
 		return JwtTokenProvider.createToken(authentication);
 	}
-
 
 }
