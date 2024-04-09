@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AccessLevel;
@@ -23,22 +24,29 @@ public class Board {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String title;
-	
+
 	private String content;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(updatable = false)
 	private Timestamp writeTime;
-	
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Timestamp updateTime;
+
 	private Boolean isDelete;
-	
+
 	private User writer;
-	
-	
+
 	@PrePersist
 	private void onCreate() {
 		writeTime = Timestamp.valueOf(LocalDateTime.now());
+	}
+
+	@PreUpdate
+	private void onUpdate() {
+		updateTime = Timestamp.valueOf(LocalDateTime.now());
 	}
 }
