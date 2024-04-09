@@ -55,8 +55,7 @@ public class AuthContoller {
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public User userInfo (Authentication authentication) throws Exception {
 		String userId = (String) authentication.getPrincipal();
-		log.info("userDetails = {}", userId);
-		return userService.findByUserId(userId);
+		return userService.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
 	}
 
 }
