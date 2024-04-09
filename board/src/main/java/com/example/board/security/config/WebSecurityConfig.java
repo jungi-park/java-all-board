@@ -38,7 +38,7 @@ public class WebSecurityConfig {
 	                .csrf(AbstractHttpConfigurer::disable)
 	                .cors(cors -> cors.configurationSource(getCorsConfiguration()))
 	                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-	                .authorizeHttpRequests((requests) -> requests.requestMatchers("/api/auth/test").hasAnyAuthority(AuthRole.USER.name()).anyRequest().permitAll()).addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+	                .authorizeHttpRequests((requests) -> requests.requestMatchers("/api/auth/user").hasAnyAuthority(AuthRole.USER.name()).anyRequest().permitAll()).addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 	        return http.build();
 	    }
 
