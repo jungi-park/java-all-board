@@ -47,14 +47,6 @@ public class AuthContoller {
 		return response;
 	}
 
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
-	public AuthResponseDto signUp(Authentication authentication) throws Exception {
-		Object userDetails = authentication;
-		log.info("userDetails = {}", userDetails);
-		AuthResponseDto response = new AuthResponseDto();
-		response.setHttpStatus(HttpStatus.OK);
-		response.setMessage("필터테스트 성공");
-		return response;
-	}
+	
 
 }
