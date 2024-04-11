@@ -60,8 +60,9 @@ public class Board {
 
 	@PrePersist
 	private void onCreate() {
-		writeTime = Timestamp.valueOf(LocalDateTime.now());
-		updateTime = Timestamp.valueOf(LocalDateTime.now());
+		Timestamp now = Timestamp.valueOf(LocalDateTime.now());
+		writeTime = now;
+		updateTime = now;
 	}
 
 	@PreUpdate
