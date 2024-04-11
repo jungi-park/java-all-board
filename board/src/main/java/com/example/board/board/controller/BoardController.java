@@ -31,7 +31,7 @@ public class BoardController {
 		BoardResponseDto response = new BoardResponseDto();
 		response.setUserId(userId);
 		response.setHttpStatus(HttpStatus.OK);
-		response.setMessage("회원가입 성공");
+		response.setMessage("글쓰기 성공");
 		return response;
 	}
 

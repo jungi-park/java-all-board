@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 import com.example.board.auth.entity.User;
 
@@ -24,6 +25,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
+@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Board {
 
@@ -46,25 +48,25 @@ public class Board {
 	private Boolean isDelete;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="USER_ID")
+	@JoinColumn(name = "USER_ID")
 	private User writer;
-	
+
 	@Builder
-	public Board(String title, String content, Boolean isDelete,User writer) {
+	public Board(String title, String content, User writer) {
 		this.title = title;
 		this.content = content;
-		this.isDelete = isDelete;
 		this.writer = writer;
 	}
 
 	@PrePersist
 	private void onCreate() {
 		writeTime = Timestamp.valueOf(LocalDateTime.now());
+		updateTime = Timestamp.valueOf(LocalDateTime.now());
 	}
 
 	@PreUpdate
 	private void onUpdate() {
 		updateTime = Timestamp.valueOf(LocalDateTime.now());
 	}
-	
+
 }
