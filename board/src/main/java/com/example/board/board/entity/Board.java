@@ -3,6 +3,8 @@ package com.example.board.board.entity;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.example.board.auth.entity.User;
 
 import jakarta.persistence.Column;
@@ -18,6 +20,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -39,11 +42,20 @@ public class Board {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Timestamp updateTime;
 
+	@ColumnDefault("false")
 	private Boolean isDelete;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="USER_ID")
 	private User writer;
+	
+	@Builder
+	public Board(String title, String content, Boolean isDelete,User writer) {
+		this.title = title;
+		this.content = content;
+		this.isDelete = isDelete;
+		this.writer = writer;
+	}
 
 	@PrePersist
 	private void onCreate() {
@@ -54,4 +66,5 @@ public class Board {
 	private void onUpdate() {
 		updateTime = Timestamp.valueOf(LocalDateTime.now());
 	}
+	
 }
