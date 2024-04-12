@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,16 +27,19 @@ public class Role {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "role_id")
 	private Long roleId;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role_name")
 	private RoleType roleName;
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "USER_ID")
 	private User user;
 
 	@Builder
-	public Role(RoleType roleName) {
+	public Role(RoleType roleName, User user) {
 		this.roleName = roleName;
+		this.user = user;
 	}
 
 }

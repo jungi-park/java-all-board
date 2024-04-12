@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 
 	public UserDetails setAuthorities(User user) {
-		user.setAuthorities(getRoles(user.getRoles().stream().toList()));
+		user.updateAuthorities(getRoles(user.getRoles().stream().toList()));
 		return user;
 	}
 

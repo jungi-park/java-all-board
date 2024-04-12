@@ -46,11 +46,10 @@ public class User implements UserDetails {
 	private Collection<SimpleGrantedAuthority> authorities;
 
 	@Builder
-	public User(String name, String userId, String password, Collection<Role> roles) {
+	public User(String name, String userId, String password) {
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
-		this.roles = roles;
 	}
 
 	@Override
@@ -88,7 +87,11 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
+	public void updateAuthorities(List<SimpleGrantedAuthority> authorities) {
 		this.authorities = authorities;
+	}
+	
+	public void updateRole(Collection<Role> roles) {
+		this.roles = roles;
 	}
 }

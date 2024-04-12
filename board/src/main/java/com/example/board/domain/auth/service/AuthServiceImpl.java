@@ -32,9 +32,10 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	@Transactional
 	public void createUser(SignUpRequestDto signUpDto) throws Exception {
-		Collection<Role> userRole = Collections.singleton(Role.builder().roleName(RoleType.USER).build());
 		User user = User.builder().name(signUpDto.getName()).userId(signUpDto.getUserId())
-				.password(encoder.encode(signUpDto.getPassword())).roles(userRole).build();
+				.password(encoder.encode(signUpDto.getPassword())).build();
+		Collection<Role> userRole = Collections.singleton(Role.builder().roleName(RoleType.USER).user(user).build());
+		user.updateRole(userRole);
 		userService.saveUser(user);
 	}
 
