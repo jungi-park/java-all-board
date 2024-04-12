@@ -40,13 +40,13 @@ public class User implements UserDetails {
 
 	@Column(name = "roles")
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private Collection<AuthRole> roles;
+	private Collection<Role> roles;
 
 	@Transient
 	private Collection<SimpleGrantedAuthority> authorities;
 
 	@Builder
-	public User(String name, String userId, String password, Collection<AuthRole> roles) {
+	public User(String name, String userId, String password, Collection<Role> roles) {
 		this.userId = userId;
 		this.name = name;
 		this.password = password;

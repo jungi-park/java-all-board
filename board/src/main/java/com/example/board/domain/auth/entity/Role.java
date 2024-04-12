@@ -9,19 +9,24 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class AuthRole {
+public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "role_id")
-	private String roleId;
+	private Long roleId;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "role_name")
 	private RoleType roleName;
@@ -29,7 +34,7 @@ public class AuthRole {
 	private User user;
 
 	@Builder
-	public AuthRole(RoleType roleName) {
+	public Role(RoleType roleName) {
 		this.roleName = roleName;
 	}
 
