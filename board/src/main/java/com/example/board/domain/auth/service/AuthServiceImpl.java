@@ -13,8 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.board.domain.auth.dto.AuthRequestDto;
 import com.example.board.domain.auth.dto.AuthResponseDto;
 import com.example.board.domain.auth.dto.SignUpRequestDto;
+import com.example.board.domain.auth.entity.Role;
 import com.example.board.domain.auth.entity.User;
-import com.example.board.domain.auth.model.AuthRole;
+import com.example.board.domain.auth.model.RoleType;
 import com.example.board.global.security.provider.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	@Transactional
 	public void createUser(SignUpRequestDto signUpDto) throws Exception {
-		Collection<AuthRole> userRole = Collections.singleton(AuthRole.USER);
+		Collection<Role> userRole = Collections.singleton(Role.builder().roleName(RoleType.USER).build());
 		User user = User.builder().name(signUpDto.getName()).userId(signUpDto.getUserId())
 				.password(encoder.encode(signUpDto.getPassword())).roles(userRole).build();
 		userService.saveUser(user);
