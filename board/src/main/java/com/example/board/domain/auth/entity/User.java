@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,14 +39,14 @@ public class User implements UserDetails {
 	private String password;
 
 	@Column(name = "roles")
-	@OneToMany(mappedBy = "user")
-	private Collection<Role> roles;
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private Collection<AuthRole> roles;
 
 	@Transient
 	private Collection<SimpleGrantedAuthority> authorities;
 
 	@Builder
-	public User(String name, String userId, String password, Collection<Role> roles) {
+	public User(String name, String userId, String password, Collection<AuthRole> roles) {
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
