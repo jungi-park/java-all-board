@@ -19,7 +19,6 @@ import com.example.board.domain.auth.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "권한 API", description = "회원가입 및 로그인 API")
 @RestController
