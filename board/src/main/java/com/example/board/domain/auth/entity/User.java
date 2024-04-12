@@ -7,13 +7,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.board.domain.auth.model.AuthRole;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -39,13 +38,14 @@ public class User implements UserDetails {
 	private String password;
 
 	@Column(name = "roles")
-	private Collection<AuthRole> roles;
+	@OneToMany(mappedBy = "user")
+	private Collection<Role> roles;
 
 	@Transient
 	private Collection<SimpleGrantedAuthority> authorities;
 
 	@Builder
-	public User(String name, String userId, String password, Collection<AuthRole> roles) {
+	public User(String name, String userId, String password, Collection<Role> roles) {
 		this.userId = userId;
 		this.name = name;
 		this.password = password;
