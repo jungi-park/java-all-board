@@ -2,6 +2,7 @@ package com.example.board.domain.auth;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,15 +14,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.example.board.domain.auth.controller.AuthContoller;
 import com.example.board.domain.auth.dto.SignUpRequestDto;
-import com.example.board.domain.auth.dto.SignUpResponseDto;
 import com.example.board.domain.auth.service.AuthService;
 import com.example.board.domain.auth.service.UserService;
 import com.example.board.global.security.filter.JwtAuthorizationFilter;
@@ -42,6 +42,7 @@ public class AuthContollerTest {
 	private UserService userService;
 
 	@Test
+	@WithMockUser
 	@DisplayName("회원가입 확인")
 	public void signUpTest() throws Exception {
 		 // given
@@ -56,10 +57,10 @@ public class AuthContollerTest {
 	    // when
 	    ResultActions resultActions = mockMvc.perform(
 	        post("/api/auth/signup")
-	            .contentType(MediaType.APPLICATION_JSON)
+	            .contentType(MediaType.APPLICATION_JSON).with(csrf())
 	            .content(new ObjectMapper().writeValueAsString(signUpDto))
 	    );
-
+	    
 	    // then
 	    resultActions.andExpect(status().isOk())
 	        .andExpect(jsonPath("$.userId").value("qmqqqm"))
