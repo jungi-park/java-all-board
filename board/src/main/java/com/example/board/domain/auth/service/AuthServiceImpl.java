@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class AuthServiceImpl implements AuthService {
 
 	private final UserService userService;
@@ -40,7 +41,6 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	@Transactional
 	public AuthResponseDto login(AuthRequestDto authRequestDto) throws Exception {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authRequestDto.getUserId(), authRequestDto.getPassword()));

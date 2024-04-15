@@ -1,4 +1,4 @@
-package com.example.board.domain.auth;
+package com.example.board.domain.auth.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
