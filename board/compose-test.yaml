@@ -7,7 +7,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: jungi1234	# 구성활 MySQL의 root 비밀번호
       MYSQL_ROOT_HOST: '%'
-      MYSQL_DATABASE: boardTest		# 기본으로 생성할 database명
+      MYSQL_DATABASE: board-test		# 기본으로 생성할 database명
     volumes:
       - ./db/mysql-test/data:/var/lib/mysql
     command:
