@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,16 +34,16 @@ public class AuthServiceTest {
 	@InjectMocks
 	private AuthServiceImpl authService;
 
-	@Mock
+	@MockBean
 	private BCryptPasswordEncoder encoder;
 
-	@Mock
+	@MockBean
 	private UserService userService;
 
-	@Mock
+	@MockBean
 	private JwtTokenProvider jwtTokenProvider;
 
-	@Mock
+	@MockBean
 	private AuthenticationManager authenticationManager;
 
 	@Test
