@@ -19,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.example.board.domain.auth.dto.AuthRequestDto;
@@ -29,7 +28,6 @@ import com.example.board.domain.auth.service.AuthService;
 import com.example.board.domain.auth.service.UserService;
 import com.example.board.global.security.filter.JwtAuthorizationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 
 import lombok.extern.slf4j.Slf4j;
 
