@@ -46,7 +46,7 @@ public class AuthServiceTest {
 	private AuthenticationManager authenticationManager;
 
 	@Test
-	@DisplayName("회원 생성 테스트")
+	@DisplayName("service 회원가입 테스트")
 	void createUserTest() throws Exception {
 		// given
 		SignUpRequestDto signUpDto = new SignUpRequestDto("박준기", "qmqqqm", "123456!");
@@ -63,7 +63,7 @@ public class AuthServiceTest {
 	}
 
 	@Test
-	@DisplayName("회원 로그인 테스트")
+	@DisplayName("service 로그인 테스트")
 	void loginTest() throws Exception {
 		// given
 		AuthRequestDto authRequestDto = AuthRequestDto.builder().userId("qmqqqm").password("123456!").build();

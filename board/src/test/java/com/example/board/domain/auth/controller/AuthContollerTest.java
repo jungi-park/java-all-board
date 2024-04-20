@@ -48,7 +48,7 @@ public class AuthContollerTest {
 
 	@Test
 	@WithMockUser
-	@DisplayName("회원가입 확인")
+	@DisplayName("controller 회원가입 테스트")
 	public void signUpTest() throws Exception {
 		// given
 		SignUpRequestDto signUpDto = SignUpRequestDto.builder().userId("qmqqqm").name("박준기").password("123456!")
@@ -77,7 +77,7 @@ public class AuthContollerTest {
 
 	@Test
 	@WithMockUser
-	@DisplayName("로그인 확인")
+	@DisplayName("controller 로그인 테스트")
 	public void loginTest() throws Exception {
 		// given
 		AuthRequestDto authRequestDto = AuthRequestDto.builder().userId("qmqqqm").password("123456!").build();

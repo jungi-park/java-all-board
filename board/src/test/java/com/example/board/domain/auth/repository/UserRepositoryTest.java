@@ -29,7 +29,7 @@ public class UserRepositoryTest {
 	BCryptPasswordEncoder encoder;
 
 	@Test
-	@DisplayName("회원가입")
+	@DisplayName("repository 회원가입 테스트")
 	void saveMember() {
 		// given
 		User user = User.builder().name("박준기").userId("qmqqqm").password(encoder.encode("123456!")).build();
