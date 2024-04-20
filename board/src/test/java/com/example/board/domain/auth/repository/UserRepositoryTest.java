@@ -1,7 +1,10 @@
 package com.example.board.domain.auth.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +33,7 @@ public class UserRepositoryTest {
 
 	@Test
 	@DisplayName("repository 회원가입 테스트")
-	void saveMember() {
+	void saveMembeTest() {
 		// given
 		User user = User.builder().name("박준기").userId("qmqqqm").password(encoder.encode("123456!")).build();
 		Collection<Role> userRole = Collections.singleton(Role.builder().roleName(RoleType.USER).user(user).build());
@@ -44,4 +47,22 @@ public class UserRepositoryTest {
 		Assertions.assertThat(user.getUserId()).isEqualTo(savedMember.getUserId());
 	}
 
+	@Test
+	@DisplayName("repository 로그인 테스트")
+	void loginMembeTest() {
+		// given
+		String userId = "qmqqqm";
+		User user = User.builder().userId(userId).name("박준기").password("123456!")
+				.build();
+		userRepository.save(user);
+
+		// when
+		User foundUser = userRepository.findByUserId(userId).orElseGet(null);
+
+		// then
+	    assertThat(foundUser).isNotNull();
+	    assertThat(foundUser.getUserId()).isEqualTo(user.getUserId());
+	    assertThat(foundUser.getName()).isEqualTo(user.getName());
+	    assertThat(foundUser.getPassword()).isEqualTo(user.getPassword());
+	}
 }
