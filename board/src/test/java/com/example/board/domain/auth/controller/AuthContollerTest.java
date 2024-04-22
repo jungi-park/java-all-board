@@ -1,12 +1,19 @@
 package com.example.board.domain.auth.controller;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,9 +28,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.example.board.domain.auth.annotation.WithMockCustomUser;
 import com.example.board.domain.auth.dto.AuthRequestDto;
 import com.example.board.domain.auth.dto.AuthResponseDto;
 import com.example.board.domain.auth.dto.SignUpRequestDto;
+import com.example.board.domain.auth.entity.Role;
+import com.example.board.domain.auth.entity.User;
+import com.example.board.domain.auth.model.RoleType;
+import com.example.board.domain.auth.repository.UserRepository;
 import com.example.board.domain.auth.service.AuthService;
 import com.example.board.domain.auth.service.UserService;
 import com.example.board.global.security.filter.JwtAuthorizationFilter;
@@ -39,6 +51,9 @@ public class AuthContollerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
+
+	@MockBean
+	private UserRepository userRepository;
 
 	@MockBean
 	private AuthService authService;
@@ -94,4 +109,30 @@ public class AuthContollerTest {
 
 	}
 
+	@Test
+	@WithMockCustomUser
+	@DisplayName("controller 개인정보확인 테스트")
+	public void userInfoTest() throws Exception {
+		// Given
+		String userId = "qmqqqm";
+		String userName = "박준기";
+		String userPassword = "123456!";
+
+		User expectedUser = User.builder().userId(userId).name(userName).password(userPassword).build();
+
+		Collection<Role> userRole = Collections
+				.singleton(Role.builder().roleName(RoleType.USER).user(expectedUser).build());
+		expectedUser.updateRole(userRole);
+
+		// Mockito 설정
+		when(userService.findByUserId(userId)).thenReturn(Optional.of(expectedUser));
+
+		// When
+		ResultActions resultActions = mockMvc
+				.perform(get("/api/auth/user").header("X-AUTH-TOKEN", "aaaaaaa").with(csrf()));
+
+		// Then
+		resultActions.andExpect(status().isOk()).andExpect(jsonPath("$.userId", is(userId)))
+				.andExpect(jsonPath("$.name", is(userName)));
+	}
 }
