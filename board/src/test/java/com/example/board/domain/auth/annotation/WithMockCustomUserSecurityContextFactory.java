@@ -17,10 +17,8 @@ public class WithMockCustomUserSecurityContextFactory implements WithSecurityCon
 	public SecurityContext createSecurityContext(WithMockCustomUser customUser) {
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
 
-		Collection<? extends GrantedAuthority> authorities = Arrays
-				.stream(customUser.role().split("")).map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
-
+		Collection<? extends GrantedAuthority> authorities = Arrays.stream(customUser.role().split(""))
+				.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 		Authentication auth = new UsernamePasswordAuthenticationToken(customUser.userId(), null, authorities);
 		context.setAuthentication(auth);
 		return context;
