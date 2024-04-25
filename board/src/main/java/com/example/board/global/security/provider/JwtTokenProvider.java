@@ -17,9 +17,7 @@ import org.springframework.stereotype.Component;
 import com.example.board.domain.auth.dto.AuthResponseDto;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -118,6 +116,6 @@ public class JwtTokenProvider {
 
 		// 토큰 만료 여부 확인
 		Date expiration = claims.getExpiration();
-		return expiration.after(new Date());
+		return !expiration.before(new Date());
 	}
 }
