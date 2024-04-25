@@ -92,7 +92,7 @@ public class JwtTokenProvider {
 	public String generateNewAccessToken(String accessToken, String refreshToken, HttpServletResponse response) {
 
 		// 리프레쉬 토큰 만료 여부 확인
-		if (tokenExpired(refreshToken)) {
+		if (isTokenExpired(refreshToken)) {
 			// 토큰이 만료된 경우 예외 처리 등의 로직 추가
 			throw new RuntimeException("refreshToken token has expired");
 		}
@@ -111,7 +111,7 @@ public class JwtTokenProvider {
 		return newAccessToken;
 	}
 
-	public boolean tokenExpired(String token) {
+	public boolean isTokenExpired(String token) {
 		Claims claims = parseJwtClaims(token);
 
 		// 토큰 만료 여부 확인

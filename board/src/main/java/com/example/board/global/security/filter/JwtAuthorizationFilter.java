@@ -33,7 +33,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 			return;
 		}
 //		엑세스 토큰 만료시
-		if (jwtTokenProvider.tokenExpired(accessToken)) {
+		if (jwtTokenProvider.isTokenExpired(accessToken)) {
 			accessToken = jwtTokenProvider.generateNewAccessToken(accessToken,refreshToken,response);
 		}
 		try {
