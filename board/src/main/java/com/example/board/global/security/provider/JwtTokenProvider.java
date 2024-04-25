@@ -30,19 +30,27 @@ public class JwtTokenProvider {
 	@Value("${jwt.secret}")
 	private String SECRET_KEY;
 
-	public AuthResponseDto createToken(Authentication authentication) throws Exception {
+	// 엑세스 토큰 만료 시간
+	private final long ACCESS_TOKEN_EXPIRE_DURATION = 1000L * 60 * 60; // 1시간
+	
+	// 리프레시 토큰 만료 시간
+	private final long REFRESH_TOKEN_EXPIRE_DURATION = 1000L * 60 * 60 * 24 * 7; // 7일
+	
+	private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-		long EXPIRE_DURATION = 1000L * 60 * 60;
+	public AuthResponseDto createToken(Authentication authentication) throws Exception {
+		
 		Date issuedAt = new Date();
-		Date expiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(EXPIRE_DURATION));
-		Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+		Date accessTokenExpiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_EXPIRE_DURATION));
+		Date refreshTokenExpiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(REFRESH_TOKEN_EXPIRE_DURATION));
+		
 		String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
 
-		String accessToken = Jwts.builder().setIssuedAt(issuedAt).setExpiration(expiration)
+		String accessToken = Jwts.builder().setIssuedAt(issuedAt).setExpiration(accessTokenExpiration)
 				.claim("AUTHORITIES", authorities).setSubject(authentication.getName()).signWith(key).compact();
 
-		String refreshToken = Jwts.builder().setExpiration(expiration).setSubject(authentication.getName())
+		String refreshToken = Jwts.builder().setExpiration(refreshTokenExpiration).setSubject(authentication.getName())
 				.signWith(key).compact();
 
 		return AuthResponseDto.builder().userId(authentication.getName()).accessToken(accessToken)
@@ -83,7 +91,7 @@ public class JwtTokenProvider {
 		return null;
 	}
 
-	public String generateNewAccessToken(String accessToken, String refreshToken,HttpServletResponse response) {
+	public String generateNewAccessToken(String accessToken, String refreshToken, HttpServletResponse response) {
 
 		// 리프레쉬 토큰 만료 여부 확인
 		if (tokenExpired(refreshToken)) {
@@ -91,10 +99,9 @@ public class JwtTokenProvider {
 			throw new RuntimeException("refreshToken token has expired");
 		}
 
-		long EXPIRE_DURATION = 1000L * 60 * 60;
 		Date issuedAt = new Date();
-		Date expiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(EXPIRE_DURATION));
-		Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+		Date expiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_EXPIRE_DURATION));
+		
 		// 새로운 액세스 토큰 생성 로직 구현
 		Claims claims = parseJwtClaims(accessToken);
 		// 예: 새로운 JWT 토큰 생성 및 반환
@@ -102,7 +109,7 @@ public class JwtTokenProvider {
 				.claim("AUTHORITIES", claims.get("AUTHORITIES").toString()).setSubject(claims.getSubject())
 				.signWith(key).compact();
 		response.setHeader("Authorization", newAccessToken);
-		
+
 		return newAccessToken;
 	}
 
