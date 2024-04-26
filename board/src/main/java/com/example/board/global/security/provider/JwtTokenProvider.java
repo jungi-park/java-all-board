@@ -21,8 +21,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
 	@Value("${jwt.secret}")
@@ -30,18 +32,19 @@ public class JwtTokenProvider {
 
 	// 엑세스 토큰 만료 시간
 	private final long ACCESS_TOKEN_EXPIRE_DURATION = 1000L * 60 * 60; // 1시간
-	
+
 	// 리프레시 토큰 만료 시간
 	private final long REFRESH_TOKEN_EXPIRE_DURATION = 1000L * 60 * 60 * 24 * 7; // 7일
-	
 
 	public AuthResponseDto createToken(Authentication authentication) throws Exception {
-		
+
 		Date issuedAt = new Date();
 		Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-		Date accessTokenExpiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_EXPIRE_DURATION));
-		Date refreshTokenExpiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(REFRESH_TOKEN_EXPIRE_DURATION));
-		
+		Date accessTokenExpiration = new Date(
+				issuedAt.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_EXPIRE_DURATION));
+		Date refreshTokenExpiration = new Date(
+				issuedAt.getTime() + TimeUnit.MINUTES.toMillis(REFRESH_TOKEN_EXPIRE_DURATION));
+
 		String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
 
@@ -92,7 +95,7 @@ public class JwtTokenProvider {
 	public String generateNewAccessToken(String accessToken, String refreshToken, HttpServletResponse response) {
 
 		// 리프레쉬 토큰 만료 여부 확인
-		if (isTokenExpired(refreshToken)) {
+		if (validateToken(refreshToken)) {
 			// 토큰이 만료된 경우 예외 처리 등의 로직 추가
 			throw new RuntimeException("refreshToken token has expired");
 		}
@@ -111,11 +114,17 @@ public class JwtTokenProvider {
 		return newAccessToken;
 	}
 
-	public boolean isTokenExpired(String token) {
+	/**
+	 * 토큰 만료 여부 확인
+	 *
+	 * @author 박준기
+	 * @version 1.0
+	 * @see 만료시 true를 리턴
+	 */
+	public boolean validateToken(String token) {
 		Claims claims = parseJwtClaims(token);
-
-		// 토큰 만료 여부 확인
 		Date expiration = claims.getExpiration();
-		return !expiration.before(new Date());
+		log.info("validateToken={}", expiration.before(new Date()));
+		return expiration.before(new Date());
 	}
 }

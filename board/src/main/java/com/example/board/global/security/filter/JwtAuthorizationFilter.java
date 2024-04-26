@@ -27,13 +27,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		String accessToken = jwtTokenProvider.resolveAccessToken(request);
-		String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
 		if (accessToken == null) {
 			filterChain.doFilter(request, response);
 			return;
 		}
-//		엑세스 토큰 만료시
-		if (jwtTokenProvider.isTokenExpired(accessToken)) {
+		// 엑세스 토큰 만료시
+		if (jwtTokenProvider.validateToken(accessToken)) {
+			String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
 			accessToken = jwtTokenProvider.generateNewAccessToken(accessToken,refreshToken,response);
 		}
 		try {
