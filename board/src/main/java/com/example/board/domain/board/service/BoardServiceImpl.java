@@ -37,7 +37,7 @@ public class BoardServiceImpl implements BoardService {
 				.orElseThrow(() -> new UsernameNotFoundException("해당하는 게시글을 찾을 수 없습니다."));
 		if (board.getWriter().getUserId().equals(userId)) {
 			board.deleteUpdate(true);
-			boardRepository.save(board);		
+			boardRepository.save(board);
 		}
 	}
 

@@ -44,8 +44,11 @@ public class BoardController {
 	public BoardResponseDto deleteBoard(@PathVariable("id") Long boardId, Authentication authentication) {
 		String userId = (String) authentication.getPrincipal();
 		boardService.deleteBoard(boardId, userId);
-		log.info("boardId = {} , userId = {}",boardId,userId);
-		return null;
+		BoardResponseDto response = new BoardResponseDto();
+		response.setUserId(userId);
+		response.setHttpStatus(HttpStatus.OK);
+		response.setMessage("글삭제 성공");
+		return response;
 	}
 
 }
