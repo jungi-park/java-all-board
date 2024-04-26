@@ -6,4 +6,6 @@ public interface BoardService {
 
 	void writeBoard(BoardRequestDto boardRequestDto, String userId) throws Exception;
 
+	void deleteBoard(Long boardId, String userId);
+
 }

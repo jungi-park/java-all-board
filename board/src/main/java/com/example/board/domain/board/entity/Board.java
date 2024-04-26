@@ -72,4 +72,8 @@ public class Board {
 		updateTime = Timestamp.valueOf(LocalDateTime.now());
 	}
 
+	public void deleteUpdate(Boolean isDelete) {
+		this.isDelete = isDelete;
+	}
+
 }
