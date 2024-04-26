@@ -34,11 +34,11 @@ public class JwtTokenProvider {
 	// 리프레시 토큰 만료 시간
 	private final long REFRESH_TOKEN_EXPIRE_DURATION = 1000L * 60 * 60 * 24 * 7; // 7일
 	
-	private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
 	public AuthResponseDto createToken(Authentication authentication) throws Exception {
 		
 		Date issuedAt = new Date();
+		Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 		Date accessTokenExpiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_EXPIRE_DURATION));
 		Date refreshTokenExpiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(REFRESH_TOKEN_EXPIRE_DURATION));
 		
@@ -99,7 +99,7 @@ public class JwtTokenProvider {
 
 		Date issuedAt = new Date();
 		Date expiration = new Date(issuedAt.getTime() + TimeUnit.MINUTES.toMillis(ACCESS_TOKEN_EXPIRE_DURATION));
-		
+		Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 		// 새로운 액세스 토큰 생성 로직 구현
 		Claims claims = parseJwtClaims(accessToken);
 		// 예: 새로운 JWT 토큰 생성 및 반환
