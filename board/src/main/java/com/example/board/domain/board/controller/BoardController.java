@@ -51,4 +51,17 @@ public class BoardController {
 		return response;
 	}
 
+	@Operation(summary = "글수정 API", description = "게시판 글수정 API입니다.")
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public BoardResponseDto updateBoard(@RequestBody BoardRequestDto boardRequestDto, @PathVariable("id") Long boardId,
+			Authentication authentication) {
+		String userId = (String) authentication.getPrincipal();
+		boardService.updateBoard(boardRequestDto,boardId, userId);
+		BoardResponseDto response = new BoardResponseDto();
+		response.setUserId(userId);
+		response.setHttpStatus(HttpStatus.OK);
+		response.setMessage("글수정 성공");
+		return response;
+	}
+
 }

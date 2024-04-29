@@ -8,4 +8,6 @@ public interface BoardService {
 
 	void deleteBoard(Long boardId, String userId);
 
+	void updateBoard(BoardRequestDto boardRequestDto, Long boardId, String userId);
+
 }

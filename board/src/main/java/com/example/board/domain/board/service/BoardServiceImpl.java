@@ -41,4 +41,16 @@ public class BoardServiceImpl implements BoardService {
 		}
 	}
 
+	@Override
+	@Transactional
+	public void updateBoard(BoardRequestDto boardRequestDto, Long boardId, String userId) {
+		Board board = boardRepository.findById(boardId)
+				.orElseThrow(() -> new RuntimeException("해당하는 게시글을 찾을 수 없습니다."));
+		if (board.getWriter().getUserId().equals(userId)) {
+			board.contentUpdate(boardRequestDto.getContent());
+			board.titleUpdate(boardRequestDto.getTitle());
+			boardRepository.save(board);
+		}
+	}
+
 }

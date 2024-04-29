@@ -76,4 +76,12 @@ public class Board {
 		this.isDelete = isDelete;
 	}
 
+	public void titleUpdate(String title) {
+		this.title = title;
+	}
+
+	public void contentUpdate(String content) {
+		this.content = content;
+	}
+
 }
